@@ -33,7 +33,7 @@ def main():
     if not torch.cuda.is_available():
         raise RuntimeError('Active una GPU T4 en Google Colab antes de ejecutar.')
 
-    dtype = torch.bfloat16
+    dtype = torch.float16
     print('Cargando codificador de texto...')
     text_encoder = T5EncoderModel.from_pretrained(
         MODEL_ID, subfolder='text_encoder', torch_dtype=dtype
