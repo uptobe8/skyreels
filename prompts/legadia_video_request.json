@@ -1,0 +1,20 @@
+{
+  "title": "Legadia — vídeo publicitario disruptivo",
+  "duration_seconds": 10,
+  "aspect_ratio": "16:9",
+  "resolution": "1920x1080",
+  "model": "THUDM/CogVideoX-5b",
+  "prompt": "A premium high-budget outdoor advertising film beside Madrid-Barajas Airport. A crowded modern glass bus shelter stands next to airport terminal architecture, with aircraft visible in the distance. Spanish travellers carrying suitcases move quickly past the shelter. The camera performs a fast smooth cinematic lateral tracking shot. Inside the glass shelter, a large vertical digital billboard shows a confident Spanish man around 55 years old wearing an elegant dark navy-blue jacket. His face is large, clear, frontal and well lit. He suddenly comes alive inside the advertisement, turns his head, locks eyes with one specific Spanish male passerby around 50 years old, leans forward and points directly at him while speaking. The digital screen bends dramatically outward in a controlled anamorphic 3D advertising effect. Old family photographs, inheritance documents, sealed envelopes and glowing warm-gold genealogical lines burst out of the screen into the real world. Brief dramatic slow motion: the photographs, papers and golden lines remain suspended in the air. One golden line travels through the crowd and connects the billboard man to the selected passerby. Everyone else freezes. The selected passerby stops and reacts with genuine astonishment. The billboard man remains clearly visible and keeps pointing. Finish with a fast cinematic push-in toward the astonished passerby's face, then return toward the illuminated digital billboard. Photorealistic Spanish people, realistic Madrid airport environment, electric blue and warm gold palette, strong cinematic contrast, premium international advertising, smooth stable camera, emotionally provocative, no logos and no readable text inside the generated video.",
+  "negative_prompt": "office, lawyers, meetings, conventional corporate imagery, fantasy, horror, comedy, English signs, logos, readable generated text, Latin American styling, distorted faces, duplicated people, deformed hands, extra fingers, camera shake, low resolution, cartoon, illustration, oversaturated colors, warped suitcases",
+  "voice": {
+    "provider": "edge-tts",
+    "voice_id": "es-ES-AlvaroNeural",
+    "text": "Usted aún no lo sabe, pero le estamos buscando porque puede tener parte de una herencia. Descubra su caso ahora."
+  },
+  "billboard_text": [
+    "USTED AÚN NO LO SABE.",
+    "PERO LE ESTAMOS BUSCANDO.",
+    "PUEDE TENER PARTE DE UNA HERENCIA."
+  ],
+  "cta": "DESCUBRA SU CASO AHORA"
+}
