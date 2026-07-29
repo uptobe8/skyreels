@@ -11,7 +11,7 @@ cd "$LATENT"
 git checkout -q 75a4a1733c7314a8f6bf092f1fbe4ced008cccd7
 
 uv python install 3.10
-uv venv --python 3.10 "$ENV"
+uv venv --seed --python 3.10 "$ENV"
 "$ENV/bin/pip" -q install -r requirements.txt
 "$ENV/bin/pip" -q install "huggingface-hub==0.25.2"
 
