@@ -6,12 +6,14 @@ on:
     paths:
       - 'render-auto-trigger.txt'
       - 'scripts/render_legadia_hf.py'
+      - 'scripts/render_legadia_wan.py'
       - 'prompts/legadia_video_request.json'
       - '.github/workflows/render_legadia_auto.yml'
   pull_request:
     paths:
       - 'render-auto-trigger.txt'
       - 'scripts/render_legadia_hf.py'
+      - 'scripts/render_legadia_wan.py'
       - 'prompts/legadia_video_request.json'
       - '.github/workflows/render_legadia_auto.yml'
 
@@ -46,10 +48,10 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install gradio_client edge-tts pillow numpy scipy
 
-      - name: Renderizar mediante espacios públicos ZeroGPU
+      - name: Renderizar mediante Wan2.1 gratuito
         id: render
         continue-on-error: true
-        run: python scripts/render_legadia_hf.py
+        run: python scripts/render_legadia_wan.py
 
       - name: Guardar resultado o diagnóstico en el repositorio
         if: always() && github.event_name != 'pull_request'
