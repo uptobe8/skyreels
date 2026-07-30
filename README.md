@@ -2,33 +2,39 @@
 
 [![Abrir en Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/uptobe8/skyreels/blob/main/notebooks/LEGADIA_CogVideoX_Colab.ipynb)
 
-Este repositorio contiene un notebook de Google Colab para producir el anuncio de Legadia sin Runway, Higgsfield ni APIs de vídeo de pago.
+Repositorio preparado para producir el anuncio de Legadia sin Runway, Higgsfield ni APIs de vídeo de pago.
 
 ## Pipeline
 
-1. **CogVideoX-5B INT8** genera el plano cinematográfico en una GPU T4 gratuita de Colab.
-2. **Edge TTS** genera la locución masculina española sin clave API.
-3. **LatentSync 1.5** sincroniza la boca del hombre de la marquesina con la locución.
-4. **FFmpeg + Pillow** crean el diseño final, mezclan el sonido y exportan un MP4 de 10 segundos a 1080p.
+1. **CogVideoX-5B INT8** genera 49 fotogramas, el máximo oficial del modelo de seis segundos.
+2. **FFmpeg** adapta el plano a 16:9, interpola a 25 fps y aplica una extensión temporal hasta 8,2 segundos.
+3. **Edge TTS** genera la locución masculina de España sin clave API.
+4. **LatentSync 1.5** intenta sincronizar la boca del hombre de la marquesina. Si la cara generada no resulta detectable, el pipeline continúa y conserva el vídeo base.
+5. **FFmpeg + Pillow** incorporan el sonido, el texto español exacto y el cierre, y exportan el MP4 final de diez segundos en 1080p.
 
 ## Ejecutar
 
-Pulse el botón **Abrir en Google Colab**, seleccione **Entorno de ejecución > Cambiar tipo de entorno de ejecución > T4 GPU** y ejecute las celdas en orden.
+Pulse **Abrir en Google Colab**, seleccione **Entorno de ejecución > Cambiar tipo de entorno de ejecución > T4 GPU** y ejecute las cinco celdas en orden.
 
-Archivo final:
+El notebook descarga este repositorio, instala las dependencias, ejecuta el pipeline, muestra el resultado y descarga automáticamente:
 
 `/content/legadia/output/LEGADIA_FINAL_1080P.mp4`
 
 ## Sin pagos
 
-No requiere claves de API de vídeo ni suscripciones. La única infraestructura es la GPU gratuita de Google Colab, sujeta a disponibilidad y límites de sesión.
+No requiere claves de API de vídeo ni suscripciones. Utiliza la GPU gratuita de Google Colab, sujeta a disponibilidad y límites de sesión de Google.
 
-## Calidad y control
+## Control del resultado
 
-El texto final no se deja al modelo generativo: se compone mediante Pillow para conservar exactamente el mensaje español y el CTA. La sincronización labial usa LatentSync 1.5, cuya inferencia publicada requiere 8 GB de VRAM. CogVideoX-5B se cuantiza a INT8 para adaptarse a la T4.
+El texto final no se delega al modelo generativo. Pillow lo compone con estas frases exactas:
+
+- USTED AÚN NO LO SABE.
+- PERO LE ESTAMOS BUSCANDO.
+- PUEDE TENER PARTE DE UNA HERENCIA.
+- DESCUBRA SU CASO AHORA
 
 ## Licencias
 
-- Código CogVideoX: Apache 2.0; consulte también la licencia específica de sus pesos 5B.
-- LatentSync: Apache 2.0.
+- CogVideoX: código Apache 2.0 y licencia específica de los pesos.
+- LatentSync: código y pesos sujetos a sus licencias publicadas.
 - Código original de este repositorio: MIT.
