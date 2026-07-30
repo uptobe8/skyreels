@@ -1,0 +1,40 @@
+name: Validar pipeline Colab
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validar archivos
+        run: |
+          python - <<'PY'
+          import ast
+          import json
+          from pathlib import Path
+
+          notebook = Path('notebooks/LEGADIA_CogVideoX_Colab.ipynb')
+          data = json.loads(notebook.read_text(encoding='utf-8'))
+          assert data['nbformat'] == 4
+          assert len(data['cells']) >= 5
+
+          config = json.loads(Path('prompts/legadia_video_request.json').read_text(encoding='utf-8'))
+          assert config['duration_seconds'] == 10
+          assert config['resolution'] == '1920x1080'
+          assert config['cta'] == 'DESCUBRA SU CASO AHORA'
+
+          for path in ['colab/generate.py', 'colab/audio.py', 'colab/master.py']:
+              ast.parse(Path(path).read_text(encoding='utf-8'), filename=path)
+
+          required = ['colab/install.sh', 'colab/lipsync.sh']
+          for path in required:
+              assert Path(path).is_file()
+
+          print('Pipeline validado')
+          PY
