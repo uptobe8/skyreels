@@ -8,9 +8,15 @@ on:
       - 'scripts/render_legadia_hf.py'
       - 'prompts/legadia_video_request.json'
       - '.github/workflows/render_legadia_auto.yml'
+  pull_request:
+    paths:
+      - 'render-auto-trigger.txt'
+      - 'scripts/render_legadia_hf.py'
+      - 'prompts/legadia_video_request.json'
+      - '.github/workflows/render_legadia_auto.yml'
 
 concurrency:
-  group: legadia-render
+  group: legadia-render-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: false
 
 permissions:
@@ -46,7 +52,7 @@ jobs:
         run: python scripts/render_legadia_hf.py
 
       - name: Guardar resultado o diagnóstico en el repositorio
-        if: always()
+        if: always() && github.event_name != 'pull_request'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
