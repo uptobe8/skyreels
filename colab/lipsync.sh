@@ -4,6 +4,9 @@ set -euo pipefail
 OUT=/content/legadia/output
 LATENT=/content/LatentSync
 ENV=/content/latentsync_env
+INPUT_VIDEO="$OUT/legadia_visual_8_2s.mp4"
+OUTPUT_VIDEO="$OUT/legadia_lipsynced_8_2s.mp4"
+AUDIO="$OUT/voice_part_1_8s.wav"
 
 rm -rf "$LATENT" "$ENV"
 git clone -q https://github.com/bytedance/LatentSync.git "$LATENT"
@@ -20,7 +23,7 @@ from huggingface_hub import snapshot_download
 snapshot_download(
     repo_id='ByteDance/LatentSync-1.5',
     local_dir='/content/LatentSync/checkpoints',
-    ignore_patterns=['*.git*', 'README.md']
+    ignore_patterns=['*.git*', 'README.md'],
 )
 PY
 
@@ -29,13 +32,21 @@ ln -sfn "$LATENT/checkpoints/auxiliary/2DFAN4-cd938726ad.zip" "$HOME/.cache/torc
 ln -sfn "$LATENT/checkpoints/auxiliary/s3fd-619a316812.pth" "$HOME/.cache/torch/hub/checkpoints/s3fd-619a316812.pth"
 ln -sfn "$LATENT/checkpoints/auxiliary/vgg16-397923af.pth" "$HOME/.cache/torch/hub/checkpoints/vgg16-397923af.pth"
 
+set +e
 "$ENV/bin/python" -m scripts.inference \
   --unet_config_path configs/unet/stage2.yaml \
   --inference_ckpt_path checkpoints/latentsync_unet.pt \
   --inference_steps 20 \
   --guidance_scale 1.5 \
-  --video_path "$OUT/legadia_visual_8_2s.mp4" \
-  --audio_path "$OUT/voice_part_1_8s.wav" \
-  --video_out_path "$OUT/legadia_lipsynced_8_2s.mp4"
+  --video_path "$INPUT_VIDEO" \
+  --audio_path "$AUDIO" \
+  --video_out_path "$OUTPUT_VIDEO"
+STATUS=$?
+set -e
 
-echo "Sincronización labial terminada."
+if [ "$STATUS" -ne 0 ] || [ ! -s "$OUTPUT_VIDEO" ]; then
+  cp "$INPUT_VIDEO" "$OUTPUT_VIDEO"
+  echo "LatentSync no pudo procesar la cara; se conserva el vídeo para completar el master."
+else
+  echo "Sincronización labial terminada."
+fi
